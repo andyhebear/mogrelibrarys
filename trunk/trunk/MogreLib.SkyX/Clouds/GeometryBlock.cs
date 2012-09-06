@@ -31,6 +31,8 @@ using MogreLib.Math;
 using MogreLib.Core;
 using MogreLib.Graphics;
 using Mogre;
+using Utility = System.Math;
+
 namespace MogreLib.SkyX.Clouds
 {
     public class GeometryBlock : IDisposable
@@ -84,8 +86,10 @@ namespace MogreLib.SkyX.Clouds
         private Mesh _mesh;
         private SubMesh _subMesh;
         private Entity _entity;
-        private HardwareVertexBuffer _vertexBuffer;
-        private HardwareIndexBuffer _indexBuffer;
+        //private HardwareVertexBuffer _vertexBuffer;
+        //private HardwareIndexBuffer _indexBuffer;
+        private HardwareVertexBufferSharedPtr _vertexBuffer;
+        private HardwareIndexBufferSharedPtr _indexBuffer;
         private Vertex[] _vertices;
         private int _numberOfTriangles;
         private int _vertexCount;
@@ -144,7 +148,7 @@ namespace MogreLib.SkyX.Clouds
         /// <summary>
         /// 
         /// </summary>
-        public HardwareVertexBuffer HardwareVertexBuffer
+        public HardwareVertexBufferSharedPtr HardwareVertexBuffer
         {
             get { return _vertexBuffer; }
             private set { _vertexBuffer = value; }
@@ -153,7 +157,7 @@ namespace MogreLib.SkyX.Clouds
         /// <summary>
         /// 
         /// </summary>
-        public HardwareIndexBuffer HardwareIndexBuffer
+        public HardwareIndexBufferSharedPtr HardwareIndexBuffer
         {
             get { return _indexBuffer; }
             private set { _indexBuffer = value; }
@@ -187,8 +191,8 @@ namespace MogreLib.SkyX.Clouds
             _nb = nb;
             _nc = nc;
             _position = position;
-            _displacement = Vector3.Zero;
-            _worldOffset = Vector2.Zero;
+            _displacement = Vector3.ZERO;
+            _worldOffset = Vector2.ZERO;
 
             CalculateSizeData();
         }
@@ -208,7 +212,7 @@ namespace MogreLib.SkyX.Clouds
             Remove();
 
             // Create mesh and submesh
-            _mesh = MogreLib.Core.MeshManager.Singleton.CreateManual("_SkyX_VClouds_Block" + _position, SkyX.SkyXResourceGroup, null);
+            _mesh = Mogre.MeshManager.Singleton.CreateManual("_SkyX_VClouds_Block" + _position, SkyX.SkyXResourceGroup, null);
             _subMesh = _mesh.CreateSubMesh();
             _subMesh.useSharedVertices = false;
 
@@ -221,12 +225,13 @@ namespace MogreLib.SkyX.Clouds
 
             // Create entity
             _entity = _VClouds.SceneManager.CreateEntity("_SkyX_VClouds_BlockEnt" + _position, "_SkyX_VClouds_Block" + _position);
-            _entity.MaterialName = "SkyX_VolClouds";
+            //_entity.MaterialName = "SkyX_VolClouds";
+            _entity.SetMaterialName("SkyX_VolClouds");
             _entity.CastShadows = false;
-            _entity.RenderQueueGroup = RenderQueueGroupID.SkiesLate;
+            _entity.RenderQueueGroup = (byte)RenderQueueGroupID.RENDER_QUEUE_SKIES_LATE;//
 
             //set bounds
-            _mesh.SetBounds(BuildAABox());
+            _mesh._setBounds(BuildAABox());
 
             this.IsCreated = true;
 
@@ -242,9 +247,9 @@ namespace MogreLib.SkyX.Clouds
             {
                 return;
             }
-            MogreLib.Core.MeshManager.Singleton.Remove(_mesh.Name);
-            _VClouds.SceneManager.RemoveEntity(_entity);
-
+            Mogre.MeshManager.Singleton.Remove(_mesh.Name);
+            //_VClouds.SceneManager.RemoveEntity(_entity);
+            _VClouds.SceneManager.DestroyEntity(_entity);
             _mesh = null;
             _subMesh = null;
             _vertexBuffer = null;
@@ -263,8 +268,8 @@ namespace MogreLib.SkyX.Clouds
         private AxisAlignedBox BuildAABox()
         {
             Vector2 center = new Vector2(0, 0);
-            Vector2 V1 = _radius * new Vector2(Utility.Cos((float)_phie * _position), Utility.Sin((float)_phie * _position));
-            Vector2 V2 = _radius * new Vector2(Utility.Cos((float)_phie * (_position + 1)), Utility.Sin((float)_phie * (_position + 1)));
+            Vector2 V1 = _radius * new Vector2((float)Utility.Cos(_phie.ValueRadians * _position), (float)Utility.Sin(_phie.ValueRadians * _position));
+            Vector2 V2 = _radius * new Vector2((float)Utility.Cos(_phie.ValueRadians * (_position + 1)), (float)Utility.Sin(_phie.ValueRadians * (_position + 1)));
 
             Vector2 Max = new Vector2(Utility.Max(Utility.Max(V1.x, V2.x), center.x), Utility.Max(Utility.Max(V1.y, V2.y), center.y));
             Vector2 Min = new Vector2(Utility.Min(Utility.Min(V1.x, V2.x), center.x), Utility.Min(Utility.Min(V1.y, V2.y), center.y));
@@ -282,29 +287,29 @@ namespace MogreLib.SkyX.Clouds
             _vertexCount = 7 * _na + 6 * _nb + 4 * _nc;
             _numberOfTriangles = 5 * _na + 4 * _nb + 2 * _nc;
 
-            _a = _height / (Utility.Cos(Utility.PI / 2.0f - (float)(Radian)(_beta)));
-            _b = _height / (Utility.Cos(Utility.PI / 2.0f - (float)(Radian)(_alpha)));
+            _a = _height / (float)(Utility.Cos(Utility.PI / 2.0f - (_beta.ValueRadians)));
+            _b = _height / (float)(Utility.Cos(Utility.PI / 2.0f - (_alpha.ValueRadians)));
             _c = _radius;
-            _v2Cos = new Vector2(Utility.Cos(_position * (float)_phie), Utility.Cos((_position + 1) * (float)_phie));
-            _v2Sin = new Vector2(Utility.Sin(_position * (float)_phie), Utility.Sin((_position + 1) * (float)_phie));
-            _betaSin = Utility.Sin(Utility.PI - (float)(Radian)_beta);
-            _alphaSin = Utility.Sin(Utility.PI - (float)(Radian)_alpha);
+            _v2Cos = new Vector2((float)Utility.Cos(_position * _phie.ValueRadians), (float)Utility.Cos((_position + 1) *_phie.ValueRadians));
+            _v2Sin = new Vector2((float)Utility.Sin(_position * _phie.ValueRadians), (float)Utility.Sin((_position + 1) * _phie.ValueRadians));
+            _betaSin = (float)Utility.Sin(Utility.PI - _beta.ValueRadians);
+            _alphaSin = (float)Utility.Sin(Utility.PI - _alpha.ValueRadians);
        }
 
         /// <summary>
         /// 
         /// </summary>
-        private void CreateGeometry()
+        private unsafe void CreateGeometry()
         {
             // Vertex buffers
             _subMesh.vertexData = new VertexData();
             _subMesh.vertexData.vertexStart = 0;
-            _subMesh.vertexData.vertexCount = _vertexCount;
+            _subMesh.vertexData.vertexCount = (uint)_vertexCount;
 
             VertexDeclaration vdecl = _subMesh.vertexData.vertexDeclaration;
             VertexBufferBinding vbind = _subMesh.vertexData.vertexBufferBinding;
 
-            int offset = 0;
+            uint offset = 0;
             // Position
             vdecl.AddElement(0, offset, VertexElementType.VET_FLOAT3, VertexElementSemantic.VES_POSITION);
             offset += VertexElement.GetTypeSize(VertexElementType.VET_FLOAT3);
@@ -319,8 +324,8 @@ namespace MogreLib.SkyX.Clouds
             offset += VertexElement.GetTypeSize(VertexElementType.VET_FLOAT1);
 
             _vertexBuffer = HardwareBufferManager.Singleton.CreateVertexBuffer(
-                offset, _vertexCount,
-                 BufferUsage.DynamicWriteOnly);
+                offset, (uint)_vertexCount,
+                 HardwareBuffer.Usage.HBU_DYNAMIC_WRITE_ONLY);
 
             vbind.SetBinding(0, _vertexBuffer);
 
@@ -405,18 +410,18 @@ namespace MogreLib.SkyX.Clouds
             }
             // Prepare buffer for indices
             _indexBuffer =
-                HardwareBufferManager.Singleton.CreateIndexBuffer(IndexType.Size32,
-                _numberOfTriangles * 3, BufferUsage.Static, true);
-
-            _indexBuffer.WriteData(
-                0, _indexBuffer.Size, indexbuffer, true);
-
+                HardwareBufferManager.Singleton.CreateIndexBuffer(Mogre.HardwareIndexBuffer.IndexType.IT_32BIT,
+                (uint)_numberOfTriangles * 3, HardwareBuffer.Usage.HBU_STATIC, true);
+            fixed (int* addr = &indexbuffer[0]) {
+                _indexBuffer.WriteData(
+                    0, _indexBuffer.SizeInBytes, addr, true);
+            }
             //indexbufferArr = null;
 
             // Set index buffer for this submesh
             _subMesh.indexData.indexBuffer = _indexBuffer;
             _subMesh.indexData.indexStart = 0;
-            _subMesh.indexData.indexCount = _numberOfTriangles * 3;
+            _subMesh.indexData.indexCount = (uint)_numberOfTriangles * 3;
 
             // Create our internal buffer for manipulations
             _vertices = new Vertex[_vertexCount];
@@ -477,12 +482,13 @@ namespace MogreLib.SkyX.Clouds
             // Tambien puede ocurrir que no intersecte porque todo el objeto está dentro, entonces para ver si está dentro
             // Frustum::isVisibile(Ogre::Vector3 vertice) con un vertice cualkiera, por ejemplo mVertices[0].xyz ;)
 
-            return camera.IsObjectVisible(_entity.ParentSceneNode.WorldAABB);
+            //return camera.IsObjectVisible(_entity.ParentSceneNode.WorldAABB);
+            return camera.IsVisible(_entity.ParentSceneNode._getWorldAABB());
         }
         /// <summary>
         /// 
         /// </summary>
-        private void UpdateGeometry()
+        private unsafe void UpdateGeometry()
         {
             // Update zone C
             for (int k = 0; k < _nc; k++)
@@ -502,11 +508,13 @@ namespace MogreLib.SkyX.Clouds
                 UpdateZoneASlice(k);
             }
              //Upload changes
-            _vertexBuffer.
-                    WriteData(0,
-                             _vertexBuffer.Size,
-                             _vertices,
-                             true);
+            fixed (Vertex* addr = &_vertices[0]) {
+                _vertexBuffer.
+                        WriteData(0,
+                                 _vertexBuffer.SizeInBytes,
+                                 addr,
+                                 true);
+            }
         }
         /// <summary>
         /// 
@@ -538,19 +546,19 @@ namespace MogreLib.SkyX.Clouds
             Vector3 or0 = new Vector3(x1.x, 0, z1.x),
                           or1 = new Vector3(x1.y, 0, z1.y);
 
-            float y0 = Radius * Utility.Sin(_alpha),
-                   d = new Vector2(x1.x - x2.x, z1.x - z2.x).Length(),
-                 ang = (float)(Radian)Utility.ATan(y0 / d),
-                 hip = _height / Utility.Sin(ang);
+            float y0 = (float)(Radius * Utility.Sin(_alpha.ValueRadians)),
+                   d = new Vector2(x1.x - x2.x, z1.x - z2.x).Length,
+                 ang = (float)Utility.Atan(y0 / d),
+                 hip = (float)(_height / Utility.Sin(ang));
 
             // Vertex 0
             SetVertexData(VertexOffset, new Vector3(x1.x, 0, z1.x), opacity);
             // Vertex 1
             SetVertexData(VertexOffset + 1, new Vector3(x1.y, 0, z1.y), opacity);
             // Vertex 2
-            SetVertexData(VertexOffset + 2, or0 + (new Vector3(x2.x, y0, z2.x) - or0).NormalizedCopy() * hip, opacity);
+            SetVertexData(VertexOffset + 2, or0 + (new Vector3(x2.x, y0, z2.x) - or0).NormalisedCopy * hip, opacity);
             // Vertex 3
-            SetVertexData(VertexOffset + 3, or1 + (new Vector3(x2.y, y0, z2.y) - or1).NormalizedCopy() * hip, opacity);
+            SetVertexData(VertexOffset + 3, or1 + (new Vector3(x2.y, y0, z2.y) - or1).NormalisedCopy * hip, opacity);
         }
         /// <summary>
         /// 
@@ -581,7 +589,7 @@ namespace MogreLib.SkyX.Clouds
                           z1 = Radius * _v2Sin,
                           z2 = Radius * _betaSin * _v2Sin;
 
-            float y0 = Radius * Utility.Sin(_alpha);
+            float y0 = Radius * (float)Utility.Sin(_alpha.ValueRadians);
 
             // Vertex 0
             SetVertexData(VertexOffset, new Vector3(x1.x, 0, z1.x), opacity);
@@ -598,16 +606,16 @@ namespace MogreLib.SkyX.Clouds
             Vector3 or0 = new Vector3(x2.x, y0, z2.x),
                           or1 = new Vector3(x2.y, y0, z2.y);
 
-            float y1 = Radius * Utility.Sin(_beta),
+            float y1 =(float) (Radius * Utility.Sin(_beta.ValueRadians)),
                   y3 = y1 - y0,
-                   d = new Vector2(x3.x - x2.x, z3.x - z2.x).Length(),
-                 ang = (float)(Radian)Utility.ATan(y3 / d),
-                 hip = (_height - y0) / Utility.Sin(ang);
+                   d = new Vector2(x3.x - x2.x, z3.x - z2.x).Length,
+                 ang = (float)Utility.Atan(y3 / d),
+                 hip = (float)((_height - y0) / Utility.Sin(ang));
 
             // Vertex 4
-            SetVertexData(VertexOffset + 4, or0 + (new Vector3(x3.x, y1, z3.x) - or0).NormalizedCopy() * hip, opacity);
+            SetVertexData(VertexOffset + 4, or0 + (new Vector3(x3.x, y1, z3.x) - or0).NormalisedCopy * hip, opacity);
             // Vertex 5
-            SetVertexData(VertexOffset + 5, or1 + (new Vector3(x3.y, y1, z3.y) - or1).NormalizedCopy() * hip, opacity);
+            SetVertexData(VertexOffset + 5, or1 + (new Vector3(x3.y, y1, z3.y) - or1).NormalisedCopy * hip, opacity);
         }
         /// <summary>
         /// 
@@ -629,7 +637,7 @@ namespace MogreLib.SkyX.Clouds
 				      z1 = Radius*_v2Sin,
 					  z2 = Radius*_betaSin*_v2Sin;
 	    
-		float y0 = Radius*Utility.Sin(_alpha);
+		float y0 = Radius*(float)Utility.Sin(_alpha.ValueRadians);
 
 		// Vertex 0
 		SetVertexData(VertexOffset, new Vector3(x1.x, 0, z1.x), opacity);
@@ -643,7 +651,7 @@ namespace MogreLib.SkyX.Clouds
 		Vector2 x3 = Radius*_alphaSin*_v2Cos,
 					  z3 = Radius*_alphaSin*_v2Sin;
 
-		float y1 = Radius*Utility.Sin(_beta);
+		float y1 = Radius*(float)Utility.Sin(_beta.ValueRadians);
 
 		// Vertex 4
 		SetVertexData(VertexOffset+4, new Vector3(x3.x, y1, z3.x), opacity);
@@ -674,12 +682,12 @@ namespace MogreLib.SkyX.Clouds
 
             // Noise coords
             float noise_scale = _VClouds.NoiseScale / _radius; //0.000175f;
-            float xz_length_radius = new Vector2(p.x, p.z).Length() / _radius;
+            float xz_length_radius = new Vector2(p.x, p.z).Length / _radius;
             Vector3 origin = new Vector3(0, (_entity != null && _entity.ParentSceneNode != null) ? 
-                -(_entity.ParentSceneNode.DerivedPosition.y - _VClouds.Camera.DerivedPosition.y) 
-                - _radius * (0.5f + 0.5f * new Vector2(p.x, p.z).Length() / _radius) : -100, 0);
-            Vector3 dir = (p - origin).NormalizedCopy();
-            float hip = Utility.Sqrt(Utility.Pow(xz_length_radius * _radius, 2) + Utility.Pow(origin.y, 2));
+                -(_entity.ParentSceneNode._getDerivedPosition().y - _VClouds.Camera.DerivedPosition.y) 
+                - _radius * (0.5f + 0.5f * new Vector2(p.x, p.z).Length / _radius) : -100, 0);
+            Vector3 dir = (p - origin).NormalisedCopy;
+            float hip = (float)Utility.Sqrt(Utility.Pow(xz_length_radius * _radius, 2) + Utility.Pow(origin.y, 2));
             Vector3 uv = dir * hip; // Only x/z, += origin don't needed
             float far_scalemultiplier = 1 - 0.5f * xz_length_radius;
             if (xz_length_radius < 0.01f) far_scalemultiplier -= 0.25f * 100 * (0.01f - xz_length_radius);

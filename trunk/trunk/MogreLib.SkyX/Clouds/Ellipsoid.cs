@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using MogreLib.Math;
 using Mogre;
+using Utility = System.Math;
 
 namespace MogreLib.SkyX.Clouds
 {
@@ -219,7 +220,7 @@ namespace MogreLib.SkyX.Clouds
             //  => lambda = sqrt (...) => maxradatdir = lambda
 
             Vector3 direction = new Vector3(x - _x, y - _y, z - _z);
-            Vector3 directionNormalized = direction.NormalizedCopy();
+            Vector3 directionNormalized = direction.NormalisedCopy;
 
             float a = Utility.Pow(directionNormalized.x, 2.0f) / (float)_a2 +
                       Utility.Pow(directionNormalized.y, 2.0f) / (float)_b2 +

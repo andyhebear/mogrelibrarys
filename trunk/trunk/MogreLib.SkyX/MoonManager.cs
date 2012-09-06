@@ -152,7 +152,7 @@ namespace MogreLib.SkyX
             float radius = this.SkyX.Camera.Far * 0.95f;
             float size = radius * this.MoonSize;
 
-            this.MoonBillboard.CommonDirection = (this.SkyX.AtmosphereManager.SunDirection).NormalizedCopy().Perpendicular();
+            this.MoonBillboard.CommonDirection = (this.SkyX.AtmosphereManager.SunDirection).NormalisedCopy.Perpendicular();
 
             Vector3 moonRelativePos = this.SkyX.AtmosphereManager.SunDirection *
                 Utility.Cos(Utility.ASin((size / 2.0f) / radius)) * radius;
