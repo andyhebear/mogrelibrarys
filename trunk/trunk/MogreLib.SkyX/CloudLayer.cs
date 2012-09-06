@@ -190,19 +190,31 @@ namespace MogreLib.SkyX
             {
                 return;
             }
-            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uScale", _options.Scale);
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uHeight", _options.Height);
+           //
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uScale", _options.Scale);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uHeight", _options.Height);
+             _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uScale", _options.Scale);
+             _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uHeight", _options.Height);
 
             float[] windDirection = { _options.WindDirection.x, _options.WindDirection.y };
 
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uWindDirection", windDirection);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uWindDirection", windDirection);
 
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uCloudLayerHeightVolume", _options.HeightVolume);
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uCloudLayerVolumetricDisplacement", _options.VolumetricDisplacement);
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uNormalMultiplier", _options.NormalMultiplier);
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uDetailAttenuation", _options.DetailAttenuation);
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uDistanceAttenuation", _options.DistanceAttenuation);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uCloudLayerHeightVolume", _options.HeightVolume);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uCloudLayerVolumetricDisplacement", _options.VolumetricDisplacement);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uNormalMultiplier", _options.NormalMultiplier);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uDetailAttenuation", _options.DetailAttenuation);
+            //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uDistanceAttenuation", _options.DistanceAttenuation);
+            
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uWindDirection", windDirection);
+
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uCloudLayerHeightVolume", _options.HeightVolume);
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uCloudLayerVolumetricDisplacement", _options.VolumetricDisplacement);
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uNormalMultiplier", _options.NormalMultiplier);
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uDetailAttenuation", _options.DetailAttenuation);
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uDistanceAttenuation", _options.DistanceAttenuation);
+
+            
         }
         /// <summary>
         /// Update internal cloud pass parameters
@@ -216,10 +228,10 @@ namespace MogreLib.SkyX
 
             if (this.SkyX.LightingMode == LightingMode.Ldr)
             {
-                _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uExposure", this.SkyX.AtmosphereManager.Options.Exposure);
+                _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uExposure", this.SkyX.AtmosphereManager.Options.Exposure);
             }
 
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uTime", this.SkyX.TimeOffset * _options.TimeMultiplier);
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uTime", this.SkyX.TimeOffset * _options.TimeMultiplier);
 
             Vector3 sunDir = this.SkyX.AtmosphereManager.SunDirection;
             if (sunDir.y > 0.15f)
@@ -227,12 +239,12 @@ namespace MogreLib.SkyX
                 sunDir = -sunDir;
             }
 
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uSunPosition", -sunDir * this.SkyX.MeshManager.SkydomeRadius);
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uSunPosition", -sunDir * this.SkyX.MeshManager.SkydomeRadius);
 
             float point = (-this.SkyX.AtmosphereManager.SunDirection.y + 1.0f) / 2.0f;
 
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uSunColor", _sunGradiant.GetColor(point));
-            _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uAmbientLuminosity", _ambientGradiant.GetColor(point));
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uSunColor", _sunGradiant.GetColor(point));
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uAmbientLuminosity", _ambientGradiant.GetColor(point));
         }
     }
 }
