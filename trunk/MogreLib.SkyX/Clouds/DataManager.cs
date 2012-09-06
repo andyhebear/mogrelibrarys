@@ -33,6 +33,7 @@ using MogreLib.Graphics;
 using MogreLib.Media;
 using Mogre;
 using Utility = System.Math;
+using PixelConverter = Mogre.PixelUtil;
 namespace MogreLib.SkyX.Clouds
 {
     public class DataManager : IDisposable
@@ -565,7 +566,7 @@ namespace MogreLib.SkyX.Clouds
                 " Light " + cell.Light +
                 " Pact " + cell.Pact +
                 " Pext " + cell.Pext +
-                " Phum " + cell.Phum, null);
+                " Phum " + cell.Phum);
 
         }
         bool first = true;
@@ -743,13 +744,13 @@ namespace MogreLib.SkyX.Clouds
                 (Texture)TextureManager.Singleton.CreateManual(
                 "_SkyX_VolCloudsData" + (int)texId,
                 SkyX.SkyXResourceGroup,
-                 TextureType.ThreeD,
-                 nx, ny,nz , 0, MogreLib.Media.PixelFormat.BYTE_RGB,TextureUsage.Default,null);
+                 TextureType.TEX_TYPE_1D,
+                 (uint)nx, (uint)ny,nz ,Mogre.PixelFormat.PF_BYTE_RGB,  (int)TextureUsage.TU_DEFAULT);
 
             _volTextures[(int)texId].Load();
 
-            Material mat = (Material)MaterialManager.Singleton.GetByName("SkyX_VolClouds");
-            mat.GetTechnique(0).GetPass(0).GetTextureUnitState((int)texId).SetTextureName("_SkyX_VolCloudsData" + (int)texId, TextureType.ThreeD);
+            MaterialPtr mat = MaterialManager.Singleton.GetByName("SkyX_VolClouds");
+            mat.GetTechnique(0).GetPass(0).GetTextureUnitState((ushort)texId).SetTextureName("_SkyX_VolCloudsData" + (int)texId, TextureType.TEX_TYPE_1D);
         }
         /// <summary>
         /// 
@@ -759,28 +760,29 @@ namespace MogreLib.SkyX.Clouds
         /// <param name="nx"></param>
         /// <param name="ny"></param>
         /// <param name="nz"></param>
-        private void UpdateVolTextureData(Cell[,,] c, VolTextureId texId, int nx, int ny, int nz)
+        private unsafe void UpdateVolTextureData(Cell[,,] c, VolTextureId texId, int nx, int ny, int nz)
         {
             HardwarePixelBuffer buffer = _volTextures[(int)texId].GetBuffer(0, 0);
 
-            buffer.Lock(BufferLocking.Discard);
+            buffer.Lock( HardwareBuffer.LockOptions.HBL_DISCARD);
             PixelBox pb = buffer.CurrentLock;
-            int x = 0; int y = 0; int z = 0;
+            uint x = 0; uint y = 0; uint z = 0;
             unsafe
             {
 
-                byte* pbptr = (byte*)pb.Data;
+                byte* pbptr = (byte*)pb.data;
 
 
-                for (z = pb.Front; z < pb.Back; z++)
+                for (z = pb.box.front; z < pb.box.back; z++)
                 {
-                    for (y = pb.Top; y < pb.Bottom; y++)
+                    for (y = pb.box.top; y < pb.box.bottom; y++)
                     {
-                        for (x = pb.Left; x < pb.Right; x++)
+                        for (x = pb.box.left; x < pb.box.right; x++)
                         {
-                            PixelConverter.PackColor(0, 0, (uint)c[x,y,z].Dens, (uint)c[x,y,z].Light, PixelFormat.BYTE_RGB, &pbptr[x]);
+                            
+                            PixelConverter.PackColor(0, 0, (uint)c[x,y,z].Dens, (uint)c[x,y,z].Light, PixelFormat.PF_BYTE_RGB, &pbptr[x]);
                         }
-                        pbptr += pb.RowPitch;
+                        pbptr += pb.rowPitch;
                     }
                     pbptr += pb.SliceSkip;
                 }
