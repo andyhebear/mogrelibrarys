@@ -178,7 +178,7 @@ namespace MogreLib.SkyX
                 }
             }
 
-            Vector2 East = _options.EastPosition.NormalizedCopy();
+            Vector2 East = _options.EastPosition.NormalisedCopy;
 
             if (X > A && X < B)
             {

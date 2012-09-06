@@ -32,6 +32,7 @@ using MogreLib.Core;
 using MogreLib.Graphics;
 using MogreLib.Media;
 using Mogre;
+using Utility = System.Math;
 namespace MogreLib.SkyX.Clouds
 {
     public class DataManager : IDisposable
@@ -404,7 +405,7 @@ namespace MogreLib.SkyX.Clouds
             }
 
             // Add new clouds if needed
-            Vector3 newclouddimensions = Vector3.Zero;
+            Vector3 newclouddimensions = Vector3.ZERO;
 
             while ((int)numberOfClouds > _ellipsoids.Count)
             {
@@ -556,7 +557,7 @@ namespace MogreLib.SkyX.Clouds
         }
         void LogCells(Cell cell)
         {
-            LogManager.Singleton.Write(
+            LogManager.Singleton.LogMessage(
                 "Act " + cell.Act +
                 " Cld " + cell.Cld +
                 " Dens " + cell.Dens +

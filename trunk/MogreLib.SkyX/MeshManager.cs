@@ -103,11 +103,13 @@ namespace MogreLib.SkyX
         /// <summary>
         /// Vertex buffer.
         /// </summary>
-        private HardwareVertexBuffer _vertexBuffer;
+        //private HardwareVertexBuffer _vertexBuffer;
+        private HardwareVertexBufferSharedPtr _vertexBuffer;
         /// <summary>
         /// Index buffer.
         /// </summary>
-        private HardwareIndexBuffer _indexBuffer;
+       // private HardwareIndexBuffer _indexBuffer;
+        private HardwareIndexBufferSharedPtr  _indexBuffer;
         /// <summary>
         /// Vertices.
         /// </summary>
@@ -244,7 +246,7 @@ namespace MogreLib.SkyX
         /// <summary>
         /// 
         /// </summary>
-        public HardwareVertexBuffer HardwareVertexBuffer
+        public HardwareVertexBufferSharedPtr HardwareVertexBuffer
         {
             get
             {
@@ -259,7 +261,7 @@ namespace MogreLib.SkyX
         /// <summary>
         /// 
         /// </summary>
-        public HardwareIndexBuffer HardwareIndexBuffer
+        public HardwareIndexBufferSharedPtr HardwareIndexBuffer
         {
             get
             {
@@ -428,7 +430,7 @@ namespace MogreLib.SkyX
         }
 
 
-        internal void UpdateGeometry()
+        internal unsafe void  UpdateGeometry()
         {
             
             if (!this.IsCreated)
@@ -500,21 +502,22 @@ namespace MogreLib.SkyX
                 _vertices[1 + (this.Circles - 1) * this.Steps + x].Opacity = this.SmoothSkydomeFading ? 0 : 1;
             }
             // Update data
-            _vertexBuffer.WriteData(0, _vertexBuffer.SizeInBytes, _vertices, true);
-
+            fixed (PosUVVertex* addr = &_vertices[0]) {
+                _vertexBuffer.WriteData(0, _vertexBuffer.SizeInBytes, addr, true);
+            }
             // Update bounds
             AxisAlignedBox meshBounds = new AxisAlignedBox(new Vector3(-TODO_Radius, 0, -TODO_Radius),
                                                             new Vector3(TODO_Radius, TODO_Radius, TODO_Radius));
 
             //_mesh.BoundingBox = meshBounds;
-            _mesh._SetBounds(meshBounds);
+            _mesh._setBounds(meshBounds);
             _sceneNode.NeedUpdate();
             //for (int i = 0; i < _vertices.Length; i++)
             //    LogVertices(_vertices[i]);
         }
         void LogVertices(PosUVVertex vertices)
         {
-            LogManager.Singleton.Write(
+            LogManager.Singleton.LogMessage(
                 "NX " + vertices.NX + " " +
                 "NY " + vertices.NY + " " +
                 "NZ " + vertices.NZ + " " +
@@ -555,7 +558,7 @@ namespace MogreLib.SkyX
 
             if (this.IsCreated)
             {
-                this.Entity.SetMaterial(this.MaterialName);
+                this.Entity.SetMaterialName(this.MaterialName);
                 //this.Entity.MaterialName = this.MaterialName;
             }
         }
@@ -575,7 +578,7 @@ namespace MogreLib.SkyX
         /// <summary>
         /// 
         /// </summary>
-        private void CreateGeometry()
+        private unsafe void CreateGeometry()
         {
             int numVertices = this.Steps * this.Circles + 1;
             int numEule = 6 * this.Steps * (this.Circles - 1) + 3 * this.Steps;
@@ -588,7 +591,7 @@ namespace MogreLib.SkyX
             VertexDeclaration vdecl = this.SubMesh.vertexData.vertexDeclaration;
             VertexBufferBinding vbind = this.SubMesh.vertexData.vertexBufferBinding;
 
-            int offset = 0;
+            uint offset = 0;
             vdecl.AddElement(0, offset, VertexElementType.VET_FLOAT3, VertexElementSemantic.VES_POSITION);
             offset += VertexElement.GetTypeSize(VertexElementType.VET_FLOAT3);
             vdecl.AddElement(0, offset, VertexElementType.VET_FLOAT3, VertexElementSemantic.VES_TEXTURE_COORDINATES, 0);
@@ -598,7 +601,7 @@ namespace MogreLib.SkyX
             vdecl.AddElement(0, offset, VertexElementType.VET_FLOAT1, VertexElementSemantic.VES_TEXTURE_COORDINATES, 2);
             offset += VertexElement.GetTypeSize(VertexElementType.VET_FLOAT1);
 
-            _vertexBuffer = HardwareBufferManager.Singleton.CreateVertexBuffer(offset, numVertices, BufferUsage.DynamicWriteOnly);
+            _vertexBuffer = HardwareBufferManager.Singleton.CreateVertexBuffer(offset, (uint)numVertices, HardwareBuffer.Usage.HBU_DYNAMIC_WRITE_ONLY);
 
             vbind.SetBinding(0, _vertexBuffer);
 
@@ -649,15 +652,16 @@ namespace MogreLib.SkyX
 
             }
             // Prepare buffer for indices
-            _indexBuffer = HardwareBufferManager.Singleton.CreateIndexBuffer(IndexType.Size32, numEule, BufferUsage.Static, true);
+            _indexBuffer = HardwareBufferManager.Singleton.CreateIndexBuffer(Mogre.HardwareIndexBuffer.IndexType.IT_32BIT, (uint)numEule, HardwareBuffer.Usage.HBU_STATIC, true);
             //for(int z = 0; z < indexBuffer.Length;z++)
             //    LogManager.Singleton.Write("Index " + indexBuffer[z]);
-            _indexBuffer.WriteData(0, _indexBuffer.Size, indexBuffer, true);
-
+            fixed (int* addr = &indexBuffer[0]) {
+                _indexBuffer.WriteData(0, _indexBuffer.SizeInBytes, addr, true);
+            }
             // Set index buffer for this submesh
             this.SubMesh.indexData.indexBuffer = _indexBuffer;
             this.SubMesh.indexData.indexStart = 0;
-            this.SubMesh.indexData.indexCount = numEule;
+            this.SubMesh.indexData.indexCount = (uint)numEule;
 
             // Create our internal buffer for manipulations
             _vertices = new PosUVVertex[1 + this.Steps * this.Circles];
