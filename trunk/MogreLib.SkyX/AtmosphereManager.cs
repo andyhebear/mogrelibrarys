@@ -29,6 +29,7 @@
 using System;
 //using MogreLib.Math;
 using Mogre;
+using Utility = Mogre.Math;
 
 namespace MogreLib.SkyX
 {

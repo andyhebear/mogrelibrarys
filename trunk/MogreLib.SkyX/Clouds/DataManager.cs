@@ -780,7 +780,7 @@ namespace MogreLib.SkyX.Clouds
                         for (x = pb.box.left; x < pb.box.right; x++)
                         {
                             
-                            PixelConverter.PackColor(0, 0, (uint)c[x,y,z].Dens, (uint)c[x,y,z].Light, PixelFormat.PF_BYTE_RGB, &pbptr[x]);
+                            PixelConverter.PackColour(0, 0, (uint)c[x,y,z].Dens, (uint)c[x,y,z].Light, PixelFormat.PF_BYTE_RGB, &pbptr[x]);
                         }
                         pbptr += pb.rowPitch;
                     }
