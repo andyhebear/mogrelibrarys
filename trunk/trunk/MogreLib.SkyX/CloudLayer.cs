@@ -144,10 +144,10 @@ namespace MogreLib.SkyX
         {
             Unregister();
 
-            cloudLayerPass.SetSceneBlending(SceneBlendType.TransparentAlpha);
-            cloudLayerPass.CullingMode = CullingMode.None;
+            cloudLayerPass.SetSceneBlending(SceneBlendType.SBT_TRANSPARENT_ALPHA);
+            cloudLayerPass.CullingMode = CullingMode.CULL_NONE;
             cloudLayerPass.LightingEnabled = false;
-            cloudLayerPass.DepthWrite = false;
+            cloudLayerPass.DepthWriteEnabled = false;
 
             cloudLayerPass.SetVertexProgram("SkyX_Clouds_VP");
             if (this.SkyX.LightingMode == LightingMode.Ldr)
@@ -160,9 +160,12 @@ namespace MogreLib.SkyX
             }
 
             //TODO
-            cloudLayerPass.CreateTextureUnitState("Cloud1.png").TextureAddressing = TextureAddressing.Wrap;
-            cloudLayerPass.CreateTextureUnitState("c22n.png").TextureAddressing = TextureAddressing.Wrap;
-            cloudLayerPass.CreateTextureUnitState("c22.png").TextureAddressing = TextureAddressing.Wrap;
+            //cloudLayerPass.CreateTextureUnitState("Cloud1.png").TextureAddressing = TextureUnitState.TextureAddressingMode.TAM_WRAP;
+            //cloudLayerPass.CreateTextureUnitState("c22n.png").TextureAddressing = TextureUnitState.TextureAddressingMode.TAM_WRAP;
+            //cloudLayerPass.CreateTextureUnitState("c22.png").TextureAddressing = TextureUnitState.TextureAddressingMode.TAM_WRAP;
+            cloudLayerPass.CreateTextureUnitState("Cloud1.png").SetTextureAddressingMode(TextureUnitState.TextureAddressingMode.TAM_WRAP );
+            cloudLayerPass.CreateTextureUnitState("c22n.png").SetTextureAddressingMode(  TextureUnitState.TextureAddressingMode.TAM_WRAP);
+            cloudLayerPass.CreateTextureUnitState("c22.png").SetTextureAddressingMode(  TextureUnitState.TextureAddressingMode.TAM_WRAP);
 
             _cloudLayerPass = cloudLayerPass;
             UpdatePassParameters();
@@ -174,7 +177,7 @@ namespace MogreLib.SkyX
         {
             if (_cloudLayerPass != null)
             {
-                _cloudLayerPass.Parent.RemovePass(_cloudLayerPass);
+                _cloudLayerPass.Parent.RemovePass(_cloudLayerPass.Index);
                 _cloudLayerPass = null;
             }
         }
@@ -187,7 +190,7 @@ namespace MogreLib.SkyX
             {
                 return;
             }
-
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant
             _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uScale", _options.Scale);
             _cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uHeight", _options.Height);
 

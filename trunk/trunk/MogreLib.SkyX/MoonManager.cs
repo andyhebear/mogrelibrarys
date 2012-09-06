@@ -31,6 +31,8 @@ using System;
 //using MogreLib.Graphics;
 //using MogreLib.Math;
 using Mogre;
+using Utility = Mogre.Math;
+
 namespace MogreLib.SkyX
 {
     public class MoonManager
@@ -124,9 +126,10 @@ namespace MogreLib.SkyX
             this.MoonSceneNode = this.SkyX.SceneManager.RootSceneNode.CreateChildSceneNode();
 
             this.MoonBillboard = this.SkyX.SceneManager.CreateBillboardSet("SkyXMoonBillboardSet", 1);
-            this.MoonBillboard.MaterialName = this.SkyX.GpuManager.MoonMaterialName;
-            this.MoonBillboard.BillboardType = BillboardType.OrientedCommon;
-            this.MoonBillboard.RenderQueueGroup = RenderQueueGroupID.SkiesEarly + 1;
+           // this.MoonBillboard.MaterialName = this.SkyX.GpuManager.MoonMaterialName;
+            this.MoonBillboard.SetMaterialName(this.SkyX.GpuManager.MoonMaterialName);
+            this.MoonBillboard.BillboardType = BillboardType.BBT_ORIENTED_COMMON;
+            this.MoonBillboard.RenderQueueGroup = (byte)(RenderQueueGroupID.RENDER_QUEUE_SKIES_EARLY + 1);
             this.MoonBillboard.CastShadows = false;
 
             this.MoonBillboard.CreateBillboard(new Vector3(0, 0, 0));
@@ -149,10 +152,10 @@ namespace MogreLib.SkyX
                 return;
             }
 
-            float radius = this.SkyX.Camera.Far * 0.95f;
+            float radius = this.SkyX.Camera.FarClipDistance * 0.95f;
             float size = radius * this.MoonSize;
 
-            this.MoonBillboard.CommonDirection = (this.SkyX.AtmosphereManager.SunDirection).NormalisedCopy.Perpendicular();
+            this.MoonBillboard.CommonDirection = (this.SkyX.AtmosphereManager.SunDirection).NormalisedCopy.Perpendicular;
 
             Vector3 moonRelativePos = this.SkyX.AtmosphereManager.SunDirection *
                 Utility.Cos(Utility.ASin((size / 2.0f) / radius)) * radius;
@@ -161,13 +164,14 @@ namespace MogreLib.SkyX
 
             if (moonRelativePos.y < -size / 2)
             {
-                this.MoonSceneNode.IsVisible = false;
+                this.MoonSceneNode.SetVisible(false);
             }
             else
             {
-                this.MoonSceneNode.IsVisible = true;
+                //this.MoonSceneNode.IsVisible = true;
+                this.MoonSceneNode.SetVisible(true);
 
-                Material mat = (Material)MaterialManager.Singleton.GetByName("SkyX_Moon");
+                MaterialPtr mat = MaterialManager.Singleton.GetByName("SkyX_Moon");
                 mat.GetTechnique(0).GetPass(0).VertexProgramParameters.SetNamedConstant("uSkydomeCenter", this.SkyX.Camera.DerivedPosition);
             }
         }
@@ -176,7 +180,7 @@ namespace MogreLib.SkyX
         }
         internal void UpdateBounds()
         {
-            float radius = this.SkyX.Camera.Far * 0.95f;
+            float radius = this.SkyX.Camera.FarClipDistance * 0.95f;
             float size = radius * this.MoonSize;
 
             this.MoonBillboard.SetDefaultDimensions(size, size);
