@@ -48,8 +48,10 @@ namespace MogreLib.SkyX
         private SkyX _skyX;
         public SkyX SkyX
         {
-            get; 
-            private set; 
+            get { return _skyX; }
+            private set {
+                _skyX = value;
+            }
         }
 
         #region Construction and Destruction
@@ -78,11 +80,11 @@ namespace MogreLib.SkyX
             CloudLayer newCloudLayer = new CloudLayer(this.SkyX, options);
 
             // TODO
-            MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName);
-            newCloudLayer.RegisterCloudLayer(mat.GetTechnique(0).CreatePass());
-            mat.Reload();
-            _cloudLayers.Add(newCloudLayer);
-
+            using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName)) {
+                newCloudLayer.RegisterCloudLayer(mat.GetTechnique(0).CreatePass());
+                mat.Reload();
+                _cloudLayers.Add(newCloudLayer);
+            }
             bool changeOrder = false;
             // Short layers by height
             for (int k = 0; k < _cloudLayers.Count; k++)
