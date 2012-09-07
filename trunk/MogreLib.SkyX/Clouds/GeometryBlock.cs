@@ -26,7 +26,7 @@
 // SkyX is Copyright (C) 2009 Xavier Verguín González <xavierverguin@hotmail.com> <xavyiy@gmail.com>
 
 // MogreLib.SkyX is Copyright (C) 2012 rains <andyhebear@hotmail.com> <andyhebear@gmail.com>
-// MogreLib.SkyX web http://hi.baidu.com/andyhebear/    http://hi.baidu.com/rainssoft/
+// MogreLib.SkyX svn: http://mogrelibrarys.googlecode.com/svn/trunk/  Author Blog http://hi.baidu.com/andyhebear/    http://hi.baidu.com/rainssoft/
 
 
 #endregion MIT/X11 License
