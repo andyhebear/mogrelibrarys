@@ -55,10 +55,10 @@
     <Compile Include="Clouds\GeometryManager.cs" />
     <Compile Include="Clouds\VClouds.cs" />
     <Compile Include="ColorGradient.cs" />
-    <Compile Include="Core\Class1.cs" />
+    <Compile Include="Core\IUpdate.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GpuManager.cs" />
-    <Compile Include="Graphics\Class1.cs" />
+    <Compile Include="Graphics\IRender.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Input\InputReader.cs" />
     <Compile Include="LightingMode.cs" />
