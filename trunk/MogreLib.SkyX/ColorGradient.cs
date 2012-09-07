@@ -80,13 +80,13 @@ namespace MogreLib.SkyX
         {
             if (_malFormed)
             {
-                LogManager.Singleton.Write("SkyX: Mal-formed ColorGradient", null);
-                return Vector3.Zero;
+                LogManager.Singleton.LogMessage("SkyX: Mal-formed ColorGradient");
+                return Vector3.ZERO;
             }
 
             if (_cFrameList.Count == 0)
             {
-                return Vector3.Zero;
+                return Vector3.ZERO;
             }
             else if (_cFrameList.Count == 1)
             {

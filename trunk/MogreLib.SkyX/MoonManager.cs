@@ -29,9 +29,9 @@
 using System;
 //using MogreLib.Core;
 //using MogreLib.Graphics;
-//using MogreLib.Math;
+using MogreLib.Math;
 using Mogre;
-using Utility = Mogre.Math;
+//using Utility = Mogre.Math;
 
 namespace MogreLib.SkyX
 {
@@ -171,8 +171,10 @@ namespace MogreLib.SkyX
                 //this.MoonSceneNode.IsVisible = true;
                 this.MoonSceneNode.SetVisible(true);
 
-                MaterialPtr mat = MaterialManager.Singleton.GetByName("SkyX_Moon");
-                mat.GetTechnique(0).GetPass(0).VertexProgramParameters.SetNamedConstant("uSkydomeCenter", this.SkyX.Camera.DerivedPosition);
+                using (MaterialPtr mat = MaterialManager.Singleton.GetByName("SkyX_Moon")) {
+                    //mat.GetTechnique(0).GetPass(0).VertexProgramParameters.SetNamedConstant("uSkydomeCenter", this.SkyX.Camera.DerivedPosition);
+                    mat.GetTechnique(0).GetPass(0).GetVertexProgramParameters().SetNamedConstant("uSkydomeCenter",this.SkyX.Camera.DerivedPosition);
+                }
             }
         }
         public void Remove()

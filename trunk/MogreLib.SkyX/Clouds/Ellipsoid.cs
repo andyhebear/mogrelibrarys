@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using MogreLib.Math;
 using Mogre;
-using Utility = System.Math;
+//using Utility = System.Math;
 
 namespace MogreLib.SkyX.Clouds
 {

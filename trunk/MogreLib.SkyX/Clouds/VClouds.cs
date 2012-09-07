@@ -205,8 +205,9 @@ namespace MogreLib.SkyX.Clouds
                     return;
                 }
 
-                Material mat = GetMaterial();
-                mat.GetTechnique(0).GetPass(0).FragmentProgramParameters.SetNamedConstant("uSunColor", _sunColor);
+                using (MaterialPtr mat = GetMaterial()) {
+                    mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters().SetNamedConstant("uSunColor", _sunColor);
+                }
             }
         }
         /// <summary>
@@ -222,8 +223,9 @@ namespace MogreLib.SkyX.Clouds
                     return;
                 }
 
-                Material mat = GetMaterial();
-                mat.GetTechnique(0).GetPass(0).FragmentProgramParameters.SetNamedConstant("uAmbientColor", _ambientColor);
+                using (MaterialPtr mat = GetMaterial()) {
+                    mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters().SetNamedConstant("uAmbientColor", _ambientColor);
+                }
             }
             get { return _ambientColor; }
         }
@@ -242,8 +244,9 @@ namespace MogreLib.SkyX.Clouds
                     return;
                 }
 
-                Material mat = GetMaterial();
-                mat.GetTechnique(0).GetPass(0).FragmentProgramParameters.SetNamedConstant("uLightResponse", _lightResponse);
+                using (MaterialPtr mat = GetMaterial()) {
+                    mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters().SetNamedConstant("uLightResponse", _lightResponse);
+                }
             }
         }
         /// <summary>
@@ -260,8 +263,9 @@ namespace MogreLib.SkyX.Clouds
                     return;
                 }
 
-                Material mat = GetMaterial();
-                mat.GetTechnique(0).GetPass(0).FragmentProgramParameters.SetNamedConstant("uAmbientFactors", _ambientFactors);
+                using (MaterialPtr mat = GetMaterial()) {
+                    mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters().SetNamedConstant("uAmbientFactors", _ambientFactors);
+                }
             }
             get { return _ambientFactors; }
         }
@@ -352,7 +356,7 @@ namespace MogreLib.SkyX.Clouds
             _na = na;
             _nb = nb;
             _nc = nc;
-            this.WindDirection = new Degree((Real)0);
+            this.WindDirection = new Degree((float)0);
             this.WindSpeed = 80f;
             _weather = new Vector2(1.0f, 1.0f);
             _numberOfForcedUpdates = -1;
@@ -382,14 +386,14 @@ namespace MogreLib.SkyX.Clouds
             this.Camera = c;
             this.IsCreated = false;
             this.Height = height;
-            _alpha = new Radian(new Degree((Real)12));
-            _beta = new Radian(new Degree((Real)40));
+            _alpha = new Radian(new Degree((float)12));
+            _beta = new Radian(new Degree((float)40));
             this.Radius = radius;
             _numberOfBlocks = 12;
             _na = 10;
             _nb = 8;
             _nc = 6;
-            this.WindDirection = new Degree((Real)0);
+            this.WindDirection = new Degree((float)0);
             this.WindSpeed = 80f;
             _weather = new Vector2(1.0f, 1.0f);
             _numberOfForcedUpdates = -1;
@@ -426,12 +430,13 @@ namespace MogreLib.SkyX.Clouds
             //Geometry manager
             this.GeometryManager = new GeometryManager(this, _height, _radius, _alpha, _beta, _numberOfBlocks, _na, _nb, _nc);
             this.GeometryManager.Create();
-            Material mat = (Material)MaterialManager.Singleton.GetByName("SkyX_VolClouds");
-            mat.GetTechnique(0).GetPass(0).VertexProgramParameters.SetNamedConstant("uRadius", _radius);
+            using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName("SkyX_VolClouds")) {
+                mat.GetTechnique(0).GetPass(0).GetVertexProgramParameters().SetNamedConstant("uRadius", _radius);
+            }
 
             this.IsCreated = true;
 
-            // Update material parameters
+            // Update MaterialPtr parameters
             this.SunColor = _sunColor;
             this.AmbientColor = _ambientColor;
             this.LightResponse = _lightResponse;
@@ -468,10 +473,11 @@ namespace MogreLib.SkyX.Clouds
             }
             _dataManager.Update(timeSinceLastFrame);
             _geometryManager.Update(timeSinceLastFrame);
-            Material mat = (Material)MaterialManager.Singleton.GetByName("SkyX_VolClouds");
-            mat.GetTechnique(0).GetPass(0).FragmentProgramParameters.SetNamedConstant("uInterpolation", _dataManager.Interpolation);
+            using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName("SkyX_VolClouds")) {
+                mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters().SetNamedConstant("uInterpolation", _dataManager.Interpolation);
 
-            mat.GetTechnique(0).GetPass(0).FragmentProgramParameters.SetNamedConstant("uSunDirection", -_sunDirection);
+                mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters().SetNamedConstant("uSunDirection", -_sunDirection);
+            }
             
         }
         /// <summary>
@@ -504,9 +510,9 @@ namespace MogreLib.SkyX.Clouds
         /// 
         /// </summary>
         /// <returns></returns>
-        private Material GetMaterial()
+        private MaterialPtr GetMaterial()
         {
-            return (Material)MaterialManager.Singleton.GetByName("SkyX_VolClouds");
+            return (MaterialPtr)MaterialManager.Singleton.GetByName("SkyX_VolClouds");
         }
     }
 }

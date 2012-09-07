@@ -319,7 +319,7 @@ namespace MogreLib.SkyX
             AtmosphereManager.Update( AtmosphereManager.Options, true );
 
             _lastCameraPosition = Camera.DerivedPosition;
-            _lastCameraFarClipDistance = Camera.Far;
+            _lastCameraFarClipDistance = Camera.FarClipDistance;
 
             MoonManager.Create();
 
@@ -382,12 +382,12 @@ namespace MogreLib.SkyX
                 _lastCameraPosition = Camera.DerivedPosition;
             }
 
-            if (_lastCameraFarClipDistance != Camera.Far)
+            if (_lastCameraFarClipDistance != Camera.FarClipDistance)
             {
                 MeshManager.UpdateGeometry();
                 MoonManager.Update();
 
-                _lastCameraFarClipDistance = Camera.Far;
+                _lastCameraFarClipDistance = Camera.FarClipDistance;
             }
 
             VCloudsManager.Update(timeSinceLastFrame);

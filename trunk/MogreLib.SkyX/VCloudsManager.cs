@@ -171,7 +171,7 @@ namespace MogreLib.SkyX
                 return;
             }
 
-            float radius = this.SkyX.Camera.Far;
+            float radius = this.SkyX.Camera.FarClipDistance;
             // Use default options if the user haven't set any specific Height parameters
             Vector2 defaultHeight = new Vector2(radius * 0.03f, radius * 0.0525f);
             Vector2 height = (_height.x == -1 || _height.y == -1) ? defaultHeight : _height;

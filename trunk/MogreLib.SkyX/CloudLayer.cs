@@ -184,7 +184,7 @@ namespace MogreLib.SkyX
         /// <summary>
         /// 
         /// </summary>
-        private void UpdatePassParameters()
+        private unsafe void UpdatePassParameters()
         {
             if (_cloudLayerPass == null)
             {
@@ -205,9 +205,9 @@ namespace MogreLib.SkyX
             //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uNormalMultiplier", _options.NormalMultiplier);
             //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uDetailAttenuation", _options.DetailAttenuation);
             //_cloudLayerPass.FragmentProgramParameters.SetNamedConstant("uDistanceAttenuation", _options.DistanceAttenuation);
-            
-            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uWindDirection", windDirection);
-
+            fixed(float* addr=&windDirection[0]){
+            _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uWindDirection", addr,2);
+            }
             _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uCloudLayerHeightVolume", _options.HeightVolume);
             _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uCloudLayerVolumetricDisplacement", _options.VolumetricDisplacement);
             _cloudLayerPass.GetFragmentProgramParameters().SetNamedConstant("uNormalMultiplier", _options.NormalMultiplier);

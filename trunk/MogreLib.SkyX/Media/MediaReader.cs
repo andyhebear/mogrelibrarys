@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MogreLib.Input {
-    class Class1 {
-    }
+namespace MogreLib.Media {
+   
 }

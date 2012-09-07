@@ -67,7 +67,7 @@ namespace MogreLib.SkyX
             private set { _skyX = value; }
         }
         /// <summary>
-        /// Get skydome material name
+        /// Get skydome MaterialPtr name
         /// </summary>
         public string SkydomeMaterialName
         {
@@ -78,7 +78,7 @@ namespace MogreLib.SkyX
             }
         }
         /// <summary>
-        /// Get moon material name
+        /// Get moon MaterialPtr name
         /// </summary>
         public string MoonMaterialName
         {
@@ -125,14 +125,18 @@ namespace MogreLib.SkyX
             {
                 case GpuProgram.Vertex:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetVertexProgramParameters();
+                        }
                     }
                     break;
                 case GpuProgram.Fragment:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters();
+                        }
                     }
                     break;
                 default:
@@ -154,12 +158,14 @@ namespace MogreLib.SkyX
                 {
                     case GpuProgram.Vertex:
                         {
-                            parameters = iter.VertexProgramParameters;
+                            //parameters = iter.VertexProgramParameters;
+                            parameters = iter.GetVertexProgramParameters();
                         }
                         break;
                     case GpuProgram.Fragment:
                         {
-                            parameters = iter.FragmentProgramParameters;
+                            //parameters = iter.FragmentProgramParameters;
+                            parameters = iter.GetFragmentProgramParameters();
                         }
                         break;
                 }
@@ -197,14 +203,18 @@ namespace MogreLib.SkyX
             {
                 case GpuProgram.Vertex:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetVertexProgramParameters();
+                        }
                     }
                     break;
                 case GpuProgram.Fragment:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                           // parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters();
+                        }
                     }
                     break;
                 default:
@@ -226,12 +236,14 @@ namespace MogreLib.SkyX
                 {
                     case GpuProgram.Vertex:
                         {
-                            parameters = iter.VertexProgramParameters;
+                            //parameters = iter.VertexProgramParameters;
+                            parameters = iter.GetVertexProgramParameters();
                         }
                         break;
                     case GpuProgram.Fragment:
                         {
-                            parameters = iter.FragmentProgramParameters;
+                           // parameters = iter.FragmentProgramParameters;
+                            parameters = iter.GetFragmentProgramParameters();
                         }
                         break;
                 }
@@ -258,7 +270,7 @@ namespace MogreLib.SkyX
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <param name="updateGroundPasses"></param>
-        public void SetGpuProgramParameter(GpuProgram gpup, string name, Vector2 value, bool updateGroundPasses)
+        public unsafe void SetGpuProgramParameter(GpuProgram gpup, string name, Vector2 value, bool updateGroundPasses)
         {
             if (!this.SkyX.MeshManager.IsCreated)
             {
@@ -271,14 +283,18 @@ namespace MogreLib.SkyX
             {
                 case GpuProgram.Vertex:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetVertexProgramParameters();
+                        }
                     }
                     break;
                 case GpuProgram.Fragment:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters();
+                        }
                     }
                     break;
                 default:
@@ -287,8 +303,9 @@ namespace MogreLib.SkyX
                     }
             }
             float[] values = { value.x, value.y };
-            parameters.SetNamedConstant(name, values);
-
+            fixed (float* addr = &values[0]) {
+                parameters.SetNamedConstant(name, addr,2);
+            }
             if (!updateGroundPasses)
             {
                 return;
@@ -300,17 +317,22 @@ namespace MogreLib.SkyX
                 {
                     case GpuProgram.Vertex:
                         {
-                            parameters = iter.VertexProgramParameters;
+                            //parameters = iter.VertexProgramParameters;
+                            parameters = iter.GetVertexProgramParameters();
                         }
                         break;
                     case GpuProgram.Fragment:
                         {
-                            parameters = iter.FragmentProgramParameters;
+                            //parameters = iter.FragmentProgramParameters;
+                            parameters = iter.GetFragmentProgramParameters();
                         }
                         break;
                 }
-
-                parameters.SetNamedConstant(name, values);
+              fixed (float* addr = &values[0]) {
+                    //parameters.SetNamedConstant(name, values);
+                parameters.SetNamedConstant(name, addr,2);
+                }
+               
             }
         }
         /// <summary>
@@ -343,14 +365,18 @@ namespace MogreLib.SkyX
             {
                 case GpuProgram.Vertex:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).VertexProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetVertexProgramParameters();
+                        }
                     }
                     break;
                 case GpuProgram.Fragment:
                     {
-                        Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName);
-                        parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                        using (MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.MeshManager.MaterialName)) {
+                            //parameters = mat.GetTechnique(0).GetPass(0).FragmentProgramParameters;
+                            parameters = mat.GetTechnique(0).GetPass(0).GetFragmentProgramParameters();
+                        }
                     }
                     break;
                 default:
@@ -372,12 +398,14 @@ namespace MogreLib.SkyX
                 {
                     case GpuProgram.Vertex:
                         {
-                            parameters = iter.VertexProgramParameters;
+                            //parameters = iter.VertexProgramParameters;
+                            parameters = iter.GetVertexProgramParameters();
                         }
                         break;
                     case GpuProgram.Fragment:
                         {
-                            parameters = iter.FragmentProgramParameters;
+                            //parameters = iter.FragmentProgramParameters;
+                            parameters = iter.GetFragmentProgramParameters();
                         }
                         break;
                 }
@@ -391,7 +419,7 @@ namespace MogreLib.SkyX
         /// <param name="groundPass">Ground pass</param>
         public void AddGroundPass(Pass groundPass)
         {
-            AddGroundPass(groundPass, 0, SceneBlendType.Add);
+            AddGroundPass(groundPass, 0, SceneBlendType.SBT_ADD);
         }
         /// <summary>
         /// Add ground pass (Use for atmospheric scattering effect on the terrain)
@@ -400,7 +428,7 @@ namespace MogreLib.SkyX
         /// <param name="atmosphereRadius">Atmosphere radius (far carmera clip plane, or needed)</param>
         public void AddGroundPass(Pass groundPass, float atmosphereRadius)
         {
-            AddGroundPass(groundPass, 0, SceneBlendType.Add);
+            AddGroundPass(groundPass, 0, SceneBlendType.SBT_ADD);
         }
         /// <summary>
         /// Add ground pass (Use for atmospheric scattering effect on the terrain)
@@ -419,12 +447,12 @@ namespace MogreLib.SkyX
             {
                 groundPass.SetFragmentProgram("SkyX_Ground_HDR_FP");
             }
-            groundPass.VertexProgramParameters.SetNamedConstant("uSkydomeRadius",
+            groundPass.GetVertexProgramParameters().SetNamedConstant("uSkydomeRadius",
                 ((atmosphereRadius == 0) ? this.SkyX.MeshManager.SkydomeRadius : atmosphereRadius) * 10);
 
             groundPass.LightingEnabled = false;
-            groundPass.DepthCheck = true;
-            groundPass.DepthWrite = false;
+            groundPass.DepthCheckEnabled = true;
+            groundPass.DepthWriteEnabled = false;
 
             groundPass.SetSceneBlending(sbt);
 
