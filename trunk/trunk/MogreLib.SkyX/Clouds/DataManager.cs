@@ -754,9 +754,10 @@ namespace MogreLib.SkyX.Clouds
 
             _volTextures[(int)texId].Load();
 
-            MaterialPtr mat = MaterialManager.Singleton.GetByName("SkyX_VolClouds");
-            mat.GetTechnique(0).GetPass(0).GetTextureUnitState((ushort)texId).SetTextureName("_SkyX_VolCloudsData" + (int)texId, TextureType.TEX_TYPE_1D);
-        }
+            using (MaterialPtr mat = MaterialManager.Singleton.GetByName("SkyX_VolClouds")) {
+                mat.GetTechnique(0).GetPass(0).GetTextureUnitState((ushort)texId).SetTextureName("_SkyX_VolCloudsData" + (int)texId, TextureType.TEX_TYPE_1D);
+            }
+            }
         /// <summary>
         /// 
         /// </summary>
