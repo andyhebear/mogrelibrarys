@@ -136,7 +136,7 @@ namespace MogreLib.Math {
         ///	Returns the angle whose cosine is the specified number.
         /// </summary>
         public static Radian ASin(float  angle) {
-            return new Radian(System.Math.Asin(angle));
+            return new Radian((float)System.Math.Asin(angle));
         }
 
         /// <summary>
