@@ -89,7 +89,7 @@ namespace MogreLib.SkyX.Clouds
             _nb = nb;
             _nc = nc;
             _worldOffset = new Vector2(0, 0);
-            _lastCameraPosition = Vector3.Zero;
+            _lastCameraPosition = Vector3.ZERO;
         }
         /// <summary>
         /// 
@@ -136,7 +136,8 @@ namespace MogreLib.SkyX.Clouds
             }
 
             _sceneNode.DetachAllObjects();
-            _sceneNode.Parent.RemoveAndDestroyChild(_sceneNode.Name);
+            //_sceneNode.Parent.RemoveAndDestroyChild(_sceneNode.Name);
+            _sceneNode.ParentSceneNode.RemoveAndDestroyChild(_sceneNode.Name);
             _sceneNode = null;
 
             _geometryBlocks.Clear();
@@ -164,12 +165,12 @@ namespace MogreLib.SkyX.Clouds
         {
             // Calculate wind offset
             Vector2 cameraDirection = new Vector2(_vclouds.Camera.DerivedDirection.x, _vclouds.Camera.DerivedDirection.z);
-            float offset = -cameraDirection.Dot(_vclouds.WindDirectionAsVector2) * _vclouds.WindSpeed * timeSinceLastFrame;
+            float offset = -cameraDirection.DotProduct(_vclouds.WindDirectionAsVector2) * _vclouds.WindSpeed * timeSinceLastFrame;
             _worldOffset += _vclouds.WindDirectionAsVector2 * _vclouds.WindSpeed * timeSinceLastFrame;
 
             // Calculate camera offset
             Vector2 cameraOffset = new Vector2(_vclouds.Camera.DerivedPosition.x - _lastCameraPosition.x, _vclouds.Camera.DerivedPosition.z - _lastCameraPosition.z);
-            offset -= cameraOffset.Dot(cameraDirection);
+            offset -= cameraOffset.DotProduct(cameraDirection);
             _worldOffset += cameraOffset;
 
             for (int k = 0; k < _numberOfBlocks; k++)

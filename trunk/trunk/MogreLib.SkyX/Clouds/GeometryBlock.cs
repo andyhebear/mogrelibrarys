@@ -31,7 +31,7 @@ using MogreLib.Math;
 using MogreLib.Core;
 using MogreLib.Graphics;
 using Mogre;
-using Utility = System.Math;
+//using Utility = System.Math;
 
 namespace MogreLib.SkyX.Clouds
 {

@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="AtmosphereManager.AtmosphereOptions.cs" />
     <Compile Include="AtmosphereManager.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="CloudLayer.cs" />
     <Compile Include="CloudLayer.Options.cs" />
     <Compile Include="CloudsManager.cs" />
@@ -61,17 +60,12 @@
     <Compile Include="GpuManager.cs" />
     <Compile Include="Graphics\Class1.cs" />
     <Compile Include="InputManager.cs" />
-    <Compile Include="Input\Class1.cs" />
-    <Compile Include="Input\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Input\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Input\InputReader.cs" />
     <Compile Include="LightingMode.cs" />
-    <Compile Include="Math\Class1.cs" />
-    <Compile Include="Media\Class1.cs" />
+    <Compile Include="Math\Enums.cs" />
+    <Compile Include="Math\Tuple.cs" />
+    <Compile Include="Math\Utility.cs" />
+    <Compile Include="Media\MediaReader.cs" />
     <Compile Include="MeshManager.cs" />
     <Compile Include="MoonManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -29,9 +29,10 @@
 using System;
 //using MogreLib.Core;
 //using MogreLib.Graphics;
-using Utility = Mogre.Math;
+//using Utility = Mogre.Math;
 //using MogreLib.Math;
 using Mogre;
+using MogreLib.Math;
 
 namespace MogreLib.SkyX
 {
@@ -229,7 +230,7 @@ namespace MogreLib.SkyX
             }
         }
         /// <summary>
-        /// Get's or set's the material name.
+        /// Get's or set's the MaterialPtr name.
         /// </summary>
         public string MaterialName
         {
@@ -413,7 +414,7 @@ namespace MogreLib.SkyX
             }
 
             this.SceneNode.DetachAllObjects();
-            (this.SceneNode.Parent as SceneNode).RemoveAndDestroyChild(this.SceneNode.Name);
+            this.SceneNode.ParentSceneNode.RemoveAndDestroyChild(this.SceneNode.Name);
             this.SceneNode = null;
 
             Mogre.MeshManager.Singleton.Remove("SkyMesh");

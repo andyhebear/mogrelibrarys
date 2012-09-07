@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections.Generic;
+using Mogre;
 //using MogreLib.Graphics;
 
 namespace MogreLib.SkyX
@@ -74,7 +75,7 @@ namespace MogreLib.SkyX
             CloudLayer newCloudLayer = new CloudLayer(this.SkyX, options);
 
             // TODO
-            Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName);
+            MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName);
             newCloudLayer.RegisterCloudLayer(mat.GetTechnique(0).CreatePass());
             mat.Reload();
             _cloudLayers.Add(newCloudLayer);
@@ -129,7 +130,7 @@ namespace MogreLib.SkyX
         {
             for (int k = 0; k < _cloudLayers.Count; k++)
             {
-                Material mat = (Material)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName);
+                MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName);
                 _cloudLayers[k].RegisterCloudLayer(mat.GetTechnique(0).CreatePass());
                 mat.Reload();
             }

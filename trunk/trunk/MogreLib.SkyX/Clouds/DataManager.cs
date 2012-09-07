@@ -32,8 +32,9 @@ using MogreLib.Core;
 using MogreLib.Graphics;
 using MogreLib.Media;
 using Mogre;
-using Utility = System.Math;
+//using Utility = System.Math;
 using PixelConverter = Mogre.PixelUtil;
+
 namespace MogreLib.SkyX.Clouds
 {
     public class DataManager : IDisposable
@@ -387,15 +388,15 @@ namespace MogreLib.SkyX.Clouds
 
                 if (currentdimensions.x / maxcloudsize.x < 0.5 || currentdimensions.x / maxcloudsize.x > 2)
                 {
-                    currentdimensions.x = maxcloudsize.x + Utility.RangeRandom(-0.2, 0.2) * maxcloudsize.x;
+                    currentdimensions.x = maxcloudsize.x + Utility.RangeRandom(-0.2f, 0.2f) * maxcloudsize.x;
                 }
                 if (currentdimensions.y / maxcloudsize.y < 0.5 || currentdimensions.y / maxcloudsize.y > 2)
                 {
-                    currentdimensions.y = maxcloudsize.y + Utility.RangeRandom(-0.2, 0.2) * maxcloudsize.y;
+                    currentdimensions.y = maxcloudsize.y + Utility.RangeRandom(-0.2f, 0.2f) * maxcloudsize.y;
                 }
                 if (currentdimensions.z / maxcloudsize.z < 0.5 || currentdimensions.x / maxcloudsize.z > 2)
                 {
-                    currentdimensions.z = maxcloudsize.z + Utility.RangeRandom(-0.2, 0.2) * maxcloudsize.z;
+                    currentdimensions.z = maxcloudsize.z + Utility.RangeRandom(-0.2f, 0.2f) * maxcloudsize.z;
                 }
             }
 
@@ -412,9 +413,9 @@ namespace MogreLib.SkyX.Clouds
             {
                 newclouddimensions = maxcloudsize * 
                     new Vector3(
-                        Utility.RangeRandom(0.5, 2), 
-                        Utility.RangeRandom(0.5, 2), 
-                        Utility.RangeRandom(0.8, 1.2));
+                        Utility.RangeRandom(0.5f, 2f), 
+                        Utility.RangeRandom(0.5f, 2f), 
+                        Utility.RangeRandom(0.8f, 1.2f));
                 AddEllipsoid(
                     new Ellipsoid(
                         (int)newclouddimensions.x, 

@@ -27,9 +27,9 @@
 #endregion MIT/X11 License
 
 using System;
-//using MogreLib.Math;
 using Mogre;
-using Utility = Mogre.Math;
+using MogreLib.Math;
+//using Utility = Mogre.Math;
 
 namespace MogreLib.SkyX
 {
@@ -372,7 +372,7 @@ namespace MogreLib.SkyX
             // Calculate the ray's starting position, then calculate its scattering offset
             Vector3 v3Start = uCameraPos;
             double fHeight = uCameraPos.y;
-            double fStartAngle = v3Ray.Dot(v3Start) / fHeight;
+            double fStartAngle = v3Ray.DotProduct(v3Start) / fHeight;
             double fDepth = System.Math.Exp(scaleOverScaleDepth * (_options.InnerRadius - uCameraPos.y));
             double fStartOffset = fDepth * Scale(fStartAngle, scaleDepth);
 
@@ -383,7 +383,7 @@ namespace MogreLib.SkyX
 
             Vector3 v3SampleRay = v3Ray * (float)fSampleLength;
             Vector3 v3SamplePoint = v3Start + v3SampleRay * 0.5f;
-            Vector3 color = Vector3.Zero, v3Attenuate = Vector3.Zero;
+            Vector3 color = Vector3.ZERO, v3Attenuate = Vector3.ZERO;
 
             // Loop the ray
             for (int i = 0; i < _options.NumberOfSamples; i++)
@@ -391,8 +391,8 @@ namespace MogreLib.SkyX
                 fHeight_ = v3SamplePoint.Length;
                 fDepth_ = System.Math.Exp(scaleOverScaleDepth * (_options.InnerRadius - fHeight_));
 
-                fLightAngle = uLightDir.Dot(v3SamplePoint) / fHeight_;
-                fCameraAngle = v3Ray.Dot(v3SamplePoint) / fHeight_;
+                fLightAngle = uLightDir.DotProduct(v3SamplePoint) / fHeight_;
+                fCameraAngle = v3Ray.DotProduct(v3SamplePoint) / fHeight_;
 
                 fScatter = (fStartOffset + fDepth * (Scale(fLightAngle, scaleDepth) - Scale(fCameraAngle, scaleDepth)));
                 v3Attenuate = new Vector3(
@@ -415,13 +415,13 @@ namespace MogreLib.SkyX
 
             // --- End vertex program simulation ---
             // --- Start fragment program simulation ---
-            double cos = uLightDir.Dot(oDirection / oDirection.Length);
+            double cos = uLightDir.DotProduct(oDirection / oDirection.Length);
             double cos2 = cos * cos;
             double rayleighPhase = 0.75 * (1.0 + 0.5 * cos2);
             double g2 = _options.G * _options.G;
             double miePhase = 1.5f * ((1.0f - g2) / (2.0f + g2)) * (1.0f + cos2) / Utility.Pow(1.0f + g2 - 2.0f * _options.G * cos, 1.5f);
 
-            Vector3 oColor = Vector3.Zero;
+            Vector3 oColor = Vector3.ZERO;
 
             if (this.SkyX.LightingMode == LightingMode.Ldr)
             {
