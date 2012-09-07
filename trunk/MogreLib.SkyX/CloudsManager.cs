@@ -135,9 +135,10 @@ namespace MogreLib.SkyX
         {
             for (int k = 0; k < _cloudLayers.Count; k++)
             {
-                MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName);
+                using( MaterialPtr mat = (MaterialPtr)MaterialManager.Singleton.GetByName(this.SkyX.GpuManager.SkydomeMaterialName)){
                 _cloudLayers[k].RegisterCloudLayer(mat.GetTechnique(0).CreatePass());
                 mat.Reload();
+            }
             }
         }
 
