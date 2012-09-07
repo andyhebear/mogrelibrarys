@@ -420,9 +420,11 @@ namespace MogreLib.SkyX
             this.SceneNode.ParentSceneNode.RemoveAndDestroyChild(this.SceneNode.Name);
             this.SceneNode = null;
 
-            Mogre.MeshManager.Singleton.Remove("SkyMesh");
+            //Mogre.MeshManager.Singleton.Remove("SkyMesh");
             //this.SkyX.SceneManager.RemoveEntity(this.Entity);
             this.SkyX.SceneManager.DestroyEntity(this.Entity);
+            Mogre.MeshManager.Singleton.Unload("SkyMesh");
+            Mogre.MeshManager.Singleton.Remove("SkyMesh");
             this.Mesh = null;
             this.SubMesh = null;
             this.Entity = null;
