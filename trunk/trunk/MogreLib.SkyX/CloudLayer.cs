@@ -1,5 +1,5 @@
 #region MIT/X11 License
-// This file is part of the Axiom.SkyX project
+// This file is part of the MogreLib.SkyX project
 //
 // Copyright (c) 2009 Michael Cummings <cummings.michael@gmail.com>
 // Copyright (c) 2009 Bostich <bostich83@googlemail.com>
@@ -22,8 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-// Axiom.SkyX is a reimplementation of the SkyX project for .Net/Mono
+// MogreLib.SkyX is a reimplementation of the SkyX project for .Net/Mono
 // SkyX is Copyright (C) 2009 Xavier Verguín González <xavierverguin@hotmail.com> <xavyiy@gmail.com>
+
+// MogreLib.SkyX is Copyright (C) 2012 rains <andyhebear@hotmail.com> <andyhebear@gmail.com>
+// MogreLib.SkyX web http://hi.baidu.com/andyhebear/    http://hi.baidu.com/rainssoft/
+
 #endregion MIT/X11 License
 using System;
 using System.Collections.Generic;
