@@ -1,0 +1,73 @@
+// --------------------- Terrain material ------------------------
+
+vertex_program SkyTerrain_VP hlsl
+{
+    source SkyTerrain.hlsl
+    entry_point main_vp
+    target vs_1_1
+
+    default_params
+    {
+    }
+}
+
+fragment_program SkyTerrain_FP hlsl
+{
+    source SkyTerrain.hlsl
+    entry_point main_fp
+    target ps_2_0
+
+    default_params
+    {
+    }
+}
+
+material SkyTerrain
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			depth_write on
+			depth_check on
+			
+			vertex_program_ref SkyTerrain_VP 
+			{
+			 
+                param_named_auto uWorldViewProj worldviewproj_matrix
+            
+         
+			}
+
+			fragment_program_ref SkyTerrain_FP 
+			{ 
+		
+			}
+			
+		
+
+         texture_unit
+         {
+            texture SkyTerrainAmbientMap.jpg
+            tex_coord_set 0
+         }
+
+
+
+         texture_unit
+         {
+            texture SkyTerrainTex0.jpg
+            tex_coord_set 1
+         }
+      
+         
+         texture_unit
+         {
+            texture SkyTerrainTex1.jpg
+            tex_coord_set 1
+         }
+		}
+	}
+}
