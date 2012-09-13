@@ -380,7 +380,7 @@ namespace MogreLib.SkyX
             }
 
             // Create mesh and submesh
-            this.Mesh = Mogre.MeshManager.Singleton.CreateManual("SkyXMesh", SkyX.SkyXResourceGroup,null);
+            this.Mesh = Mogre.MeshManager.Singleton.CreateManual("SkyXMesh", SkyX.SkyXResourceGroup);
             this.SubMesh = this.Mesh.CreateSubMesh();
             this.SubMesh.useSharedVertices = false;
 
