@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Mogre;
 using MogreLib.SkyX;
+using System.Diagnostics;
 
 namespace Mogre.Demo.MogreForm {
     public partial class MogreForm : Form {
@@ -15,7 +16,7 @@ namespace Mogre.Demo.MogreForm {
         public MogreForm() {
             InitializeComponent();
             this.Disposed += new EventHandler(MogreForm_Disposed);
-
+            ToReflashAction = new Action<bool>(SafeReflash);
             mogreWin = new OgreWindow(new Point(100, 30), mogrePanel.Handle);
             mogreWin.InitMogre();
             CreateSkyX();
@@ -35,6 +36,7 @@ namespace Mogre.Demo.MogreForm {
             AtmosphereManager.AtmosphereOptions opt = (AtmosphereManager.AtmosphereOptions)_skyX.AtmosphereManager.Options.Clone();
             opt.RayleighMultiplier = 0.0045f;
             _skyX.AtmosphereManager.Options = opt;
+            _skyX.TimeMultiplier = 0.5f;
             // Add our ground atmospheric scattering pass to terrain material
             //var terrainMaterial = (Material)MaterialManager.Instance.GetByName("Terrain");
             //if (terrainMaterial != null)
@@ -61,14 +63,10 @@ namespace Mogre.Demo.MogreForm {
             //debugText = this.camera.DerivedPosition.ToString();
             return true;
         }
-        //protected override void OnLoad(EventArgs e) {
-        //    this.Show();
-        //    base.OnLoad(e);
-        //    while (true) {
-        //        Application.DoEvents();
-        //        this.Invalidate();
-        //    }
-        //}
+        protected override void OnLoad(EventArgs e) {
+            base.OnLoad(e);
+            this.timer1.Start();
+        }
         protected override void OnKeyUp(KeyEventArgs e) {
             // Time
             float TimeSinceLastFrame = 0.2f;
@@ -217,8 +215,16 @@ namespace Mogre.Demo.MogreForm {
         }
 
         void MogreForm_Disposed(object sender, EventArgs e) {
+            Process.GetCurrentProcess().Kill();
             //_skyX.Remove();
-            mogreWin.Dispose();
+            //mogreWin.Dispose();
+        }
+        Action<bool> ToReflashAction;
+        void SafeReflash(bool reflash) {
+            this.Invalidate();
+        }
+        private void timer1_Tick(object sender, EventArgs e) {
+            ToReflashAction.Invoke(true);
         }
     }
 
