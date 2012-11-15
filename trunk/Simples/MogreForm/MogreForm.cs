@@ -21,15 +21,26 @@ namespace Mogre.Demo.MogreForm
             mogreWin = new OgreWindow(new Point(100, 30), mogrePanel.Handle);
             mogreWin.InitMogre();
         }
-
+        protected override void OnShown(EventArgs e) {          
+            base.OnShown(e);
+        }
+        protected override void OnLoad(EventArgs e) {
+            base.OnLoad(e); 
+            this.timer1.Start();
+        }
         private void MogreForm_Paint(object sender, PaintEventArgs e)
         {
-            mogreWin.Paint();
+            //mogreWin.Paint();
         }
 
         void MogreForm_Disposed(object sender, EventArgs e)
         {
             mogreWin.Dispose();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e) {
+            //this.Invalidate();
+            mogreWin.Paint();
         }
     }
 
@@ -138,7 +149,18 @@ namespace Mogre.Demo.MogreForm
             Entity ent = sceneMgr.CreateEntity("ogre", "ogrehead.mesh");
             SceneNode node = sceneMgr.RootSceneNode.CreateChildSceneNode("ogreNode");
             node.AttachObject(ent);
+            //
+            mGrass = new Grass(sceneMgr);
+            mGrass.CreateScene();
+            root.FrameStarted += new FrameListener.FrameStartedHandler(root_FrameStarted);
         }
+
+        bool root_FrameStarted(FrameEvent evt) {
+            mGrass.OnFrameStarted(evt);
+            return true;
+        }
+        Grass mGrass;
+
 
         public void Paint()
         {

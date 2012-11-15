@@ -28,21 +28,27 @@ namespace Mogre.Demo.MogreForm
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mogrePanel = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // mogrePanel
             // 
-            this.mogrePanel.Location = new System.Drawing.Point(150, 68);
+            this.mogrePanel.Location = new System.Drawing.Point(38, 12);
             this.mogrePanel.Name = "mogrePanel";
-            this.mogrePanel.Size = new System.Drawing.Size(483, 375);
+            this.mogrePanel.Size = new System.Drawing.Size(640, 480);
             this.mogrePanel.TabIndex = 0;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MogreForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(810, 544);
+            this.ClientSize = new System.Drawing.Size(732, 502);
             this.Controls.Add(this.mogrePanel);
             this.Name = "MogreForm";
             this.Text = "Simple Mogre Form";
@@ -54,6 +60,7 @@ namespace Mogre.Demo.MogreForm
         #endregion
 
         private System.Windows.Forms.Panel mogrePanel;
+        private System.Windows.Forms.Timer timer1;
 
     }
 }
