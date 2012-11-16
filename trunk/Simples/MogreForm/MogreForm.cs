@@ -20,7 +20,15 @@ namespace Mogre.Demo.MogreForm
 
             mogreWin = new OgreWindow(new Point(100, 30), mogrePanel.Handle);
             mogreWin.InitMogre();
+            //
+            //this.mogrePanel.MouseWheel += new MouseEventHandler(mogrePanel_MouseWheel);
         }
+        protected override void OnMouseWheel(MouseEventArgs e) {
+            base.OnMouseWheel(e);  
+            Camera cam= mogreWin.sceneMgr.CurrentViewport.Camera;
+            cam.MoveRelative(new Vector3(0,0,e.Delta*0.2f));
+        }
+       
         protected override void OnShown(EventArgs e) {          
             base.OnShown(e);
         }
@@ -137,7 +145,7 @@ namespace Mogre.Demo.MogreForm
             // 5 Create the camera 
             //----------------------------------------------------- 
             camera = sceneMgr.CreateCamera("SimpleCamera"); 
-	        camera.Position = new Vector3(0f,0f,100f);
+	        camera.Position = new Vector3(0f,10f,100f);
 	        // Look back along -Z
 	        camera.LookAt(new Vector3(0f,0f,-300f));
 	        camera.NearClipDistance = 5;
