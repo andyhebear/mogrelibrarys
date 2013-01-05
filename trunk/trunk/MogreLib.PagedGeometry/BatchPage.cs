@@ -40,6 +40,9 @@ using ColorEx = Mogre.ColourValue;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 批次页
+    /// </summary>
     public class BatchPage : GeometryPage
     {
         private bool mFadeEnabled;
