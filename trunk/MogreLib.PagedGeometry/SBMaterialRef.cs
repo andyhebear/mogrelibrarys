@@ -38,7 +38,7 @@ using Mogre;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
-    /// 
+    /// 材质引用
     /// </summary>
     public class SBMaterialRef
     {

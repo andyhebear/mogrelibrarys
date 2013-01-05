@@ -39,6 +39,9 @@ using ColorEx = Mogre.ColourValue;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 假批次
+    /// </summary>
     public class ImpostorBatch
     {
         protected ImpostorTexture mTex;

@@ -37,6 +37,9 @@ using MogreLib.Core;
 using Mogre;
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 树引用器
+    /// </summary>
     public class TreeRef
     {
         private Vector3 mPosition;

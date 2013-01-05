@@ -38,7 +38,7 @@ using Mogre;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
-    /// 
+    /// 3D树加载器
     /// </summary>
     public class TreeLoader3D : PageLoader
     {

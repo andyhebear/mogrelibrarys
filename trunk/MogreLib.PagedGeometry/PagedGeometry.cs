@@ -39,6 +39,9 @@ using Mogre;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 页内存
+    /// </summary>
     public class PagedGeometry
     {
         protected SceneManager mSceneMgr;

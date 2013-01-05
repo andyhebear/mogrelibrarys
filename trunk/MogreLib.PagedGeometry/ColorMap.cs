@@ -43,14 +43,16 @@ namespace MogreLib.PagedGeometry
 {
     /// <summary>
     /// A 2D greyscale image that is assigned to a certain region of your world to represent color levels.
+    /// 二维灰度图像，被分配到一个特定地区的代表颜色的世界。
     /// </summary>
     /// <remarks>
     /// This class is used by various PagedLoader's internally, so it's not necessary to learn anything about this class.
     /// However, you can achieve more advanced effects through the ColorMap class interface than you can with the standard
     /// GrassLayer color map functions, for example.
-    /// 
+    /// 这个类是使用各种pagedloader的内部，所以没有必要了解这类。然而，你可以达到更高的影响，通过颜色表类接口比用标准grasslayer彩色地图功能，例如。
     /// Probably the most useful function in this class is getPixelBox(), which you can use to directly manipulate the
     /// color map pixels in real-time.
+    /// 也许是最有用的功能在这一类getpixelbox()，你可以用它直接操纵像素实时彩色地图。
     /// </remarks>
     public class ColorMap : IDisposable
     {
@@ -208,7 +210,7 @@ namespace MogreLib.PagedGeometry
         public static ColorMap Load(string fileName, MapChannel channel)
         {
             //Load image
-            Texture map = TextureManager.Instance.Load(fileName, ResourceGroupManager.DefaultResourceGroupName);
+            Texture map = TextureManager.Singleton.Load(fileName, ResourceGroupManager.DefaultResourceGroupName);
 
             //Copy image to pixelbox
             return Load(map, channel);
