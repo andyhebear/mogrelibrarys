@@ -39,6 +39,7 @@ namespace MogreLib.PagedGeometry
 {
     /// <summary>
     /// Internal class - do not use!
+    /// 静态广告牌
     /// </summary>
     internal class StaticBillboard
     {

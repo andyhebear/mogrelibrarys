@@ -37,6 +37,9 @@ using System.Text;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 页类型接口
+    /// </summary>
     public interface IPageType
     {
     }

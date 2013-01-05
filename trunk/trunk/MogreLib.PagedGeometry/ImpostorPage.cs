@@ -40,7 +40,7 @@ using ColorEx = Mogre.ColourValue;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
-    /// 
+    /// 假页
     /// </summary>
     public class ImpostorPage : GeometryPage
     {

@@ -37,6 +37,9 @@ using System.Text;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 获取高度接口
+    /// </summary>
     public interface IHeightFunction
     {
         /// <summary>

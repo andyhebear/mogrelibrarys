@@ -41,7 +41,7 @@ using Mogre;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
-    /// 
+    /// 草层
     /// </summary>
     public class GrassLayer
     {

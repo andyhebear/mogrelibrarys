@@ -183,7 +183,7 @@ namespace MogreLib.PagedGeometry
         public static DensityMap Load(string fileName, MapChannel channel)
         {
             //load image
-            Texture map = TextureManager.Instance.Load(fileName, ResourceGroupManager.DefaultResourceGroupName);
+            Texture map = TextureManager.Singleton.Load(fileName, ResourceGroupManager.DefaultResourceGroupName);
 
             //Copy image to pixelbox
             return Load(map, channel);

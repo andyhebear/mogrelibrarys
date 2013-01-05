@@ -41,6 +41,7 @@ using Mogre;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
+    /// 草加载器
     /// A PageLoader-derived object you can use with PagedGeometry to produce realistic grass.
     /// </summary>
     /// <remarks>

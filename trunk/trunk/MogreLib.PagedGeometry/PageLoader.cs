@@ -40,6 +40,7 @@ using ColorEx = Mogre.ColourValue;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
+    /// 页加载器
     /// A class which you extend to provide a callback function for loading entities.
     /// </summary>
     public abstract class PageLoader : IDisposable

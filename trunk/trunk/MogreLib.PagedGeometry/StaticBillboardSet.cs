@@ -35,7 +35,9 @@ using ColorEx = Mogre.ColourValue;
 
 namespace MogreLib.PagedGeometry
 {
-    
+    /// <summary>
+    /// 静态广告牌设置器
+    /// </summary>
     public class StaticBillboardSet
     {
         private SceneManager mSceneMgr;

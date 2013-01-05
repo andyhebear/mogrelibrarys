@@ -39,6 +39,9 @@ using ColorEx = Mogre.ColourValue;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 内存页
+    /// </summary>
     public abstract class GeometryPage
     {
         private Vector3 mCenterPoint;

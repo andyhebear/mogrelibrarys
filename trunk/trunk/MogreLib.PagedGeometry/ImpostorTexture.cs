@@ -55,7 +55,7 @@ namespace MogreLib.PagedGeometry
         internal float mEntityDiameter;
         internal float mEntityRadius;
         internal Vector3 mEntityCenter;
-        protected ImpostorTextureResourceLoader mLoader;
+        protected IManualResourceLoader mLoader; //protected ImpostorTextureResourceLoader mLoader;
         protected static long GUID;
          
         /// <summary>
@@ -177,8 +177,8 @@ namespace MogreLib.PagedGeometry
             Debug.Assert(mTexture != null);
             string texName = mTexture.Name;
             mTexture = null;
-            if (TextureManager.Instance != null)
-                TextureManager.Instance.Remove(texName);
+            if (TextureManager.Singleton != null)
+                TextureManager.Singleton.Remove(texName);
 
             RenderTextures(true);
             UpdateMaterials();
@@ -197,7 +197,7 @@ namespace MogreLib.PagedGeometry
             int textureSize = ImpostorPage.ImpostorResolution;
             if (renderTexture == null)
             {
-                renderTexture = (Texture)TextureManager.Instance.CreateManual(GetUniqueID("ImpostorTexture"), "Impostors",
+                renderTexture = (Texture)TextureManager.Singleton.CreateManual(GetUniqueID("ImpostorTexture"), "Impostors",
                      TextureType.TwoD, textureSize * ImpostorYawAngles, textureSize * ImpostorPitchAngles, 0,
                       MogreLibMedia.PixelFormat.A8B8G8R8, TextureUsage.RenderTarget, mLoader);
             }
@@ -291,7 +291,7 @@ namespace MogreLib.PagedGeometry
             {
                 try
                 {
-                    mTexture = (Texture)TextureManager.Instance.Load(fileName, "BinFolder", TextureType.TwoD, 0x7FFFFFFF);
+                    mTexture = (Texture)TextureManager.Singleton.Load(fileName, "BinFolder", TextureType.TwoD, 0x7FFFFFFF);
                 }
                 catch
                 {
@@ -328,7 +328,7 @@ namespace MogreLib.PagedGeometry
                 renderTarget.WriteContentsToFile(fileName);
 
                 //Load the render into the appropriate texture view
-                mTexture = (Texture)TextureManager.Instance.Load(fileName, "BinFolder", TextureType.TwoD, 0x7FFFFFFF);
+                mTexture = (Texture)TextureManager.Singleton.Load(fileName, "BinFolder", TextureType.TwoD, 0x7FFFFFFF);
             }
 
             mEntity.IsVisible = oldVisible;
@@ -359,8 +359,8 @@ namespace MogreLib.PagedGeometry
             string texName2 = renderTexture.Name;
 
             renderTexture = null;
-            if (TextureManager.Instance != null)
-                TextureManager.Instance.Remove(texName2);
+            if (TextureManager.Singleton != null)
+                TextureManager.Singleton.Remove(texName2);
         }
         /// <summary>
         /// 

@@ -39,6 +39,7 @@ using ColorEx = Mogre.ColourValue;
 namespace MogreLib.PagedGeometry
 {
     /// <summary>
+    /// 草 页
     /// A custom page type designed specifically for use with GrassLoader.
     /// </summary>
     /// <remarks>

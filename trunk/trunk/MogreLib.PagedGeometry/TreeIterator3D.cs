@@ -36,6 +36,9 @@ using System.Text;
 
 namespace MogreLib.PagedGeometry
 {
+    /// <summary>
+    /// 待实现逻辑
+    /// </summary>
     public class TreeIterator3D
     {
     }
