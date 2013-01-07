@@ -38,7 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="_BatchedGeometry.cs" />
+    <Compile Include="BatchedGeometry.cs" />
     <Compile Include="BatchPage.cs" />
     <Content Include="说明.txt" />
     <Compile Include="ColorMap.cs" />
@@ -57,6 +57,9 @@
     <Compile Include="ImpostorBatch.cs" />
     <Compile Include="ImpostorPage.cs" />
     <Compile Include="ImpostorTexture.cs" />
+    <Compile Include="_BatchedGeometry.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="_ImpostorTextureResourceLoader.cs" />
     <Compile Include="Input\InputReader.cs" />
     <Compile Include="IPageType.cs" />
